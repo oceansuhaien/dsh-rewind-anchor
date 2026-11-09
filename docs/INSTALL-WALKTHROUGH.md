@@ -71,3 +71,44 @@ Purge is currently the locally patched `fix3` build that already positions its m
 correctly through a body portal. The plugin's descendant selector intentionally does not
 match that build, so you may observe no visible change right after installation. It takes
 effect when a Purge update restores the unpatched, wrapper-local menu.
+
+## Installed on 2026-11-09 (verified)
+
+Result reported by the DSH in-app agent:
+
+| Field                           | Value                                                                      |
+| ------------------------------- | -------------------------------------------------------------------------- |
+| `application`                   | `applied`                                                                  |
+| `warnings`                      | `[]`                                                                       |
+| `version`                       | `0.1.0`                                                                    |
+| `stage` / `enabled` / `changed` | `enable` / `true` / `true`                                                 |
+| pnpm                            | exit code 0, one generic peer-dependency notice (not counted as a warning) |
+
+The displayed `bundle` value contained a transcription artifact (`@//local/...` with a
+leading space). The real, on-disk name is **`@local/dsh-rewind-anchor`** everywhere:
+`dsh.profile.bundles`, `dependencies`, `pnpm-lock.yaml`, and the linked
+`node_modules/@local/dsh-rewind-anchor`. No correction was needed.
+
+Post-install checks performed:
+
+- Startup load path validated: `dsh.bundle.patch` resolves, `cordis.patch.yml` parses as
+  YAML with one `insert` row named after the package, `./client`, `locale/*.json` and
+  `icon.svg` all resolve.
+- Plugin Manager 已安装 list shows the localized entry `回退菜单定位修正` with its
+  Chinese description, a 查看 button and an 启用 switch in state `checked`.
+- `npm run check` (7 tests) and `npm pack --dry-run` (9 runtime files) still pass.
+
+Not verified, and deliberately not claimed:
+
+- **Menu geometry / visual placement.** The Purge 回退 button was disabled at the time
+  (`UIA_E_ELEMENTNOTENABLED`), so the menu could not be opened without creating a new
+  session or triggering a model turn; no DOM emulation was used.
+- **Whether the stylesheet is currently in effect.** Purge is still the patched `fix3`
+  build whose menu is portalled to `body`, so the descendant selector intentionally does
+  not match. The real acceptance test is the first Purge update that restores the
+  unpatched wrapper-local menu; repeat the Stage 3 checklist then.
+- Icon rendering in the Plugin Manager was not captured visually.
+
+`application: applied` means HMR applied the installation, but an unchanged slot id does
+not prove a fresh Client module generation was loaded. Refresh the page (or fully restart
+DSH when no turn is running) once before relying on the fix.
