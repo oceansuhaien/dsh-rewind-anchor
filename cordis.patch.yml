@@ -1,0 +1,3 @@
+- insert:
+    - id: dsh-rewind-anchor
+      name: '@local/dsh-rewind-anchor'

@@ -1,0 +1,21 @@
+# Dependencies and build output
+node_modules/
+coverage/
+dist/
+*.tgz
+
+# Logs and local state
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.dsh/
+*.bak
+*.tmp
+
+# Editor and environment
+.idea/
+.vscode/
+.env
+.env.*
+!.env.example
