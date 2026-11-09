@@ -72,3 +72,28 @@ test('client module respects UI plugin boundaries', () => {
     assert.ok(!client.includes(forbidden), `forbidden UI pattern: ${forbidden}`);
   }
 });
+
+test('positioning override is declarative, scoped and CSS-only', () => {
+  assert.ok(client.includes("require('react')"), 'React must come from the browser module table');
+  assert.ok(client.includes("h('style'"), 'styles must be a component-local React element');
+
+  const css = client.match(/const REWIND_ANCHOR_CSS = `([\s\S]*?)`;/)?.[1] ?? '';
+  assert.ok(
+    css.includes('.dshp-rewind-wrap > .dshp-rewind-menu'),
+    'selector must be scoped so portal-based Purge builds are untouched',
+  );
+
+  const declarations = [...css.matchAll(/^\s*([a-z-]+):\s*([^;]+);/gm)].map((match) => [
+    match[1],
+    match[2],
+  ]);
+  assert.ok(declarations.length > 0, 'no CSS declarations found');
+  const positioningOnly = new Set(['position', 'top', 'right', 'bottom', 'left', 'transform']);
+  for (const [property, value] of declarations) {
+    assert.ok(positioningOnly.has(property), `non-positioning declaration: ${property}`);
+    assert.ok(value.includes('!important'), `${property} must override Purge inline styles`);
+  }
+  for (const forbidden of ['display:', 'visibility:', 'z-index:', 'pointer-events:']) {
+    assert.ok(!css.includes(forbidden), `forbidden CSS: ${forbidden}`);
+  }
+});
