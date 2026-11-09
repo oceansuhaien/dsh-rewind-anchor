@@ -44,6 +44,10 @@
 
 - Install with `plugin_manager` `action: install_bundle`, `target` = absolute path to this
   directory. Do not reproduce package installation with shell commands in a profile.
+  The `desktop` profile is Electron-managed exclusively: `dsh --profile desktop ...`
+  returns `error: profile "desktop" is managed exclusively by the Electron application`,
+  and `dsh plugin --profile desktop ...` is not a valid substitute for `install_bundle`.
+  Follow `INSTALL-WALKTHROUGH.md` instead.
 - Read `application` and `warnings` from the installation result. `restart-required` means
   the new Client module generation is not live yet.
 - Confirm the row with `cordis_inspect_query`, not `list_plugins`.

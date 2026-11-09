@@ -41,7 +41,9 @@ It never reimplements, replaces, or wraps the rewind button or its RPC.
 
 - **Never** hand-edit `~/.dsh/profiles/*/package.json` or the profile `cordis.patch.yml`,
   and never run `pnpm` in a profile directory. Install with `plugin_manager`
-  `install_bundle` using this directory as the absolute target.
+  `install_bundle` using this directory as the absolute target. The `desktop` profile is
+  Electron-managed exclusively, so the external CLI cannot install it; see
+  `docs/INSTALL-WALKTHROUGH.md`.
 - **Never** modify any file inside `dsh-purge-community`. A manual repack of that plugin is
   what corrupted its manifest in the incident that motivated this project.
 - Keep the original rewind button, menu items, event handlers, locale and

@@ -30,6 +30,10 @@ directory as the target. Do **not** hand-edit `~/.dsh/profiles/*/package.json` o
 `cordis.patch.yml`, and do not run `pnpm` inside the profile directory; the plugin manager
 performs those steps.
 
+On this machine the `desktop` profile is Electron-managed exclusively and the CLI refuses
+it, so the last mile happens inside DSH. See `docs/INSTALL-WALKTHROUGH.md` for the exact
+one-line instruction to give the in-app agent, the UI alternative and result codes.
+
 After installation, restart DSH if the client module generation is not refreshed by HMR.
 
 ## Verify
